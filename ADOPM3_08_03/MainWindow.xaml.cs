@@ -58,7 +58,7 @@ namespace ADOPM3_08_03
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
             myGreetings.Text = "";
-            int nrPrimes = await new CPUBoundAsync().GetPrimesCountAsync(2, 10000000);
+            int nrPrimes = await new CPUBoundAsync().GetPrimesCountAsync(2, 10_000_000);
             myGreetings.Text = nrPrimes.ToString();
         }
 

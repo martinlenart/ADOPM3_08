@@ -19,13 +19,17 @@ namespace ADOPM3_08_01
         public async Task DisplayPrimeCountsAsync()
         {
             for (int i = 0; i < 10; i++)
-                Console.WriteLine(await GetPrimesCountAsync(i * 1000000 + 2, 1000000) +
-                    " primes between " + (i * 1000000) + " and " + ((i + 1) * 1000000 - 1));
+            {
+                var t = await GetPrimesCountAsync(i * 1000000 + 2, 1000000) +
+                    " primes between " + (i * 1000000) + " and " + ((i + 1) * 1000000 - 1);
+                
+                Console.WriteLine(t);
+            }
 
             Console.WriteLine("Done!");
         }
 
-        Task<int> GetPrimesCountAsync(int start, int count)
+        public Task<int> GetPrimesCountAsync(int start, int count)
         {
             return Task.Run(() =>
                Enumerable.Range(start, count).Count(n =>
@@ -34,17 +38,27 @@ namespace ADOPM3_08_01
     }
     class Program
     {
-        static void Main(string[] args)
+        //   - Main is abit special in Console Applications to make async, pls see
+        //   - https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-7.1/async-main
+        public static void Main()
+        {
+            MainAsync().GetAwaiter().GetResult();
+        }
+
+        private static async Task MainAsync()
         {
             Console.WriteLine("Invoking GetDotNetCountAsync");
-            int count = new IOBoundAsync().GetDotNetCountAsync().Result;
+            int count = await new IOBoundAsync().GetDotNetCountAsync();
             Console.WriteLine($"Number of times .Net keyword displayed is {count}");
 
-            Console.WriteLine("Invoking DisplayPrimeCountsAsync");
-            var t1 = new CPUBoundAsync().DisplayPrimeCountsAsync();
-            t1.Wait();
+            Console.WriteLine("\nInvoking GetPrimesCountAsync");
+            count = await new CPUBoundAsync().GetPrimesCountAsync(2, 1000_000);
+            Console.WriteLine(count);
+
+            Console.WriteLine("\nInvoking DisplayPrimeCountsAsync");
+            await new CPUBoundAsync().DisplayPrimeCountsAsync();
         }
     }
     //Exercises:
-    //1.  Modify code to first invoke both GetDotNetCountAsync and DisplayPrimeCountsAsync, then wait for all tasks to complete. 
+    //1. Modify code to first invoke both GetDotNetCountAsync, GetPrimesCountAsync and DisplayPrimeCountsAsync, then wait for all tasks to complete. 
 }

@@ -8,12 +8,12 @@ namespace ADOPM3_08_02
     {
         internal class myTasks
         {
-            private async Task<string> TaskOne()
+            private async Task<string> TaskOneAsync()
             {
                 await Task.Delay(1000);
                 return "task one";
             }
-            private async Task<string> TaskTwo()
+            private async Task<string> TaskTwoAsync()
             {
                 await Task.Delay(2000);
                 return "task two";
@@ -23,8 +23,8 @@ namespace ADOPM3_08_02
                 var watch = new Stopwatch();
                 watch.Start();
 
-                await TaskOne();
-                await TaskTwo();
+                await TaskOneAsync();
+                await TaskTwoAsync();
 
                 watch.Stop();
                 return watch.ElapsedMilliseconds;
@@ -34,8 +34,8 @@ namespace ADOPM3_08_02
                 var watch = new Stopwatch();
                 watch.Start();
 
-                var t1 = TaskOne();
-                var t2 = TaskTwo();
+                var t1 = TaskOneAsync();
+                var t2 = TaskTwoAsync();
 
                 await t1;
                 await t2;
