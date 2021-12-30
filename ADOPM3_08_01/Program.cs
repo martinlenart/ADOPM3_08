@@ -52,7 +52,7 @@ namespace ADOPM3_08_01
             Console.WriteLine($"Number of times .Net keyword displayed is {count}");
 
             Console.WriteLine("\nInvoking GetPrimesCountAsync");
-            count = await new CPUBoundAsync().GetPrimesCountAsync(2, 1000_000);
+            count = await new CPUBoundAsync().GetPrimesCountAsync(2, 5_000_000);
             Console.WriteLine(count);
 
             Console.WriteLine("\nInvoking DisplayPrimeCountsAsync");
@@ -60,5 +60,5 @@ namespace ADOPM3_08_01
         }
     }
     //Exercises:
-    //1. Modify code to first invoke both GetDotNetCountAsync, GetPrimesCountAsync and DisplayPrimeCountsAsync, then wait for all tasks to complete. 
+    //1. Modify code to first invoke both GetDotNetCountAsync, GetPrimesCountAsync and DisplayPrimeCountsAsync, then wait for all tasks to complete using await. 
 }
