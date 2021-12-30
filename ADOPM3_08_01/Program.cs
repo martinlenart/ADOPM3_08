@@ -28,7 +28,7 @@ namespace ADOPM3_08_01
         Task<int> GetPrimesCountAsync(int start, int count)
         {
             return Task.Run(() =>
-               ParallelEnumerable.Range(start, count).Count(n =>
+               Enumerable.Range(start, count).Count(n =>
                  Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i > 0)));
         }
     }
@@ -46,6 +46,5 @@ namespace ADOPM3_08_01
         }
     }
     //Exercises:
-    //1.  Investigate ParallelEnumerable and explain the major difference to Enumerable
-    //2.  Modify code to first invoke both GetDotNetCountAsync and DisplayPrimeCountsAsync, then wait for all tasks to complete. 
+    //1.  Modify code to first invoke both GetDotNetCountAsync and DisplayPrimeCountsAsync, then wait for all tasks to complete. 
 }
