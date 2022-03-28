@@ -38,14 +38,7 @@ namespace ADOPM3_08_01
     }
     class Program
     {
-        //   - Main is abit special in Console Applications to make async, pls see
-        //   - https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-7.1/async-main
-        public static void Main()
-        {
-            MainAsync().GetAwaiter().GetResult();
-        }
-
-        private static async Task MainAsync()
+        public static async Task Main()
         {
             /*
             Console.WriteLine("Invoking GetDotNetCountAsync");

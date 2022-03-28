@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADOPM3_08_01", "ADOPM3_08_01\ADOPM3_08_01.csproj", "{21F1E2D1-35FA-48C8-834D-C4C28AC83D1B}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADOPM3_08_04", "ADOPM3_08_04\ADOPM3_08_04.csproj", "{1C549F30-E284-4F19-B132-8809E07C9E97}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADOPM3_08_05", "ADOPM3_08_05\ADOPM3_08_05.csproj", "{D95485FE-FCD1-4570-8880-E6B72CA5FCA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOPM3_08_06", "ADOPM3_08_06\ADOPM3_08_06.csproj", "{F9A8F2FE-16D4-4C1C-8002-3AFD116784A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D95485FE-FCD1-4570-8880-E6B72CA5FCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D95485FE-FCD1-4570-8880-E6B72CA5FCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D95485FE-FCD1-4570-8880-E6B72CA5FCA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9A8F2FE-16D4-4C1C-8002-3AFD116784A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9A8F2FE-16D4-4C1C-8002-3AFD116784A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9A8F2FE-16D4-4C1C-8002-3AFD116784A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9A8F2FE-16D4-4C1C-8002-3AFD116784A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
