@@ -20,8 +20,8 @@ namespace ADOPM3_08_01
         {
             for (int i = 0; i < 10; i++)
             {
-                var t = await GetPrimesCountAsync(i * 1000000 + 2, 1000000) +
-                    " primes between " + (i * 1000000) + " and " + ((i + 1) * 1000000 - 1);
+                var t = await GetPrimesCountAsync(i * 1_000_000 + 2, 1_000_000) +
+                    " primes between " + (i * 1_000_000) + " and " + ((i + 1) * 1_000_000 - 1);
                 
                 Console.WriteLine(t);
             }
@@ -47,12 +47,14 @@ namespace ADOPM3_08_01
 
         private static async Task MainAsync()
         {
+            /*
             Console.WriteLine("Invoking GetDotNetCountAsync");
             int count = await new IOBoundAsync().GetDotNetCountAsync();
             Console.WriteLine($"Number of times .Net keyword displayed is {count}");
+            */
 
             Console.WriteLine("\nInvoking GetPrimesCountAsync");
-            count = await new CPUBoundAsync().GetPrimesCountAsync(2, 5_000_000);
+            int count = await new CPUBoundAsync().GetPrimesCountAsync(2, 5_000_000);
             Console.WriteLine(count);
 
             Console.WriteLine("\nInvoking DisplayPrimeCountsAsync");
