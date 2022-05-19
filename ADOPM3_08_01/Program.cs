@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ADOPM3_08_01
 {
@@ -18,7 +19,7 @@ namespace ADOPM3_08_01
     {
         public async Task DisplayPrimeCountsAsync()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 var t = await GetPrimesCountAsync(i * 1_000_000 + 2, 1_000_000) +
                     " primes between " + (i * 1_000_000) + " and " + ((i + 1) * 1_000_000 - 1);
@@ -29,30 +30,55 @@ namespace ADOPM3_08_01
             Console.WriteLine("Done!");
         }
 
-        public Task<int> GetPrimesCountAsync(int start, int count)
+        public Task<int> GetPrimesCountAsync(int start, int count) => Task.Run(() => GetPrimesCount(start, count));
+        public int GetPrimesCount(int start, int count)
         {
-            return Task.Run(() =>
-               Enumerable.Range(start, count).Count(n =>
-                 Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i > 0)));
+            return Enumerable.Range(start, count).Count(n =>
+                 Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i > 0));
         }
     }
     class Program
     {
         public static async Task Main()
         {
-            /*
-            Console.WriteLine("Invoking GetDotNetCountAsync");
-            int count = await new IOBoundAsync().GetDotNetCountAsync();
-            Console.WriteLine($"Number of times .Net keyword displayed is {count}");
-            */
+            //CPUBound Async - syncronous Method() -> asyncronous MethodAsync() through Task.Run() wrapper 
+            //Syncronous calculations of Primes
+            var timer = new Stopwatch();
+            timer.Start();
+            Console.WriteLine("\nSyncronous calculations of Primes");
+            var count1 = new CPUBoundAsync().GetPrimesCount(2, 2_000_000);
+            var count2 = new CPUBoundAsync().GetPrimesCount(2, 2_000_000);
+            Console.WriteLine(count1 + count2);
+            timer.Stop();
+            Console.WriteLine($"{timer.ElapsedMilliseconds:N0}");  //13 s
 
-            Console.WriteLine("\nInvoking GetPrimesCountAsync");
-            int count = await new CPUBoundAsync().GetPrimesCountAsync(2, 5_000_000);
-            Console.WriteLine(count);
+            //asyncronous calculations of Primes using classical async / await pattern
+            timer.Restart();
+            Console.WriteLine("\nAsyncronous calculations of Primes using classical async / await pattern");
+            var count3 = await new CPUBoundAsync().GetPrimesCountAsync(2, 2_000_000);
+            var count4 = await new CPUBoundAsync().GetPrimesCountAsync(2, 2_000_000);
+            Console.WriteLine(count3+count4);
+            timer.Stop();
+            Console.WriteLine($"{timer.ElapsedMilliseconds:N0}"); //13s
+
+            //asyncronous calculations of Primes using classical running the two Tasks in parallell
+            timer.Restart();
+            Console.WriteLine("\nAsyncronous calculations of Primes using classical running the two Tasks in parallell");
+            var countTask1 = new CPUBoundAsync().GetPrimesCountAsync(2, 2_000_000);
+            var countTask2 = new CPUBoundAsync().GetPrimesCountAsync(2, 2_000_000);
+            Console.WriteLine(countTask1.Result + countTask2.Result);
+            timer.Stop();
+            Console.WriteLine($"{timer.ElapsedMilliseconds:N0}"); //7 s
 
             Console.WriteLine("\nInvoking DisplayPrimeCountsAsync");
             await new CPUBoundAsync().DisplayPrimeCountsAsync();
-        }
+            
+
+            // IO Bound Async - using already asyncronous MethodAsync
+            Console.WriteLine("\nInvoking GetDotNetCountAsync");
+            int count = await new IOBoundAsync().GetDotNetCountAsync();
+            Console.WriteLine($"Number of times .Net keyword displayed is {count}");
+         }
     }
     //Exercises:
     //1. Modify code to first invoke both GetDotNetCountAsync, GetPrimesCountAsync and DisplayPrimeCountsAsync, then wait for all tasks to complete using await. 
