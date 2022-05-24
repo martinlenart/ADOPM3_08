@@ -5,16 +5,16 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ADOPM3_08_04
+namespace ADOPM3_08_04a
 {
     internal class CPUBoundAsync
     {
-        public Task DisplayPrimeCountsAsync(IProgress<string> onProgressReporting)
+        public Task DisplayPrimeCountsAsync(IProgress<string> onProgressReporting, CancellationToken cancellationToken)
         {
             //Notice I can use async in Lambda Expression
             return Task.Run(async () =>
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 20 && !cancellationToken.IsCancellationRequested; i++)
                 {
                     int nrprimes = await GetPrimesCountAsync(i * 1000000 + 2, 1000000);
                     onProgressReporting.Report($"{nrprimes} primes between " + (i * 1000000) + " and " + ((i + 1) * 1000000 - 1));
@@ -34,19 +34,30 @@ namespace ADOPM3_08_04
         {
             Console.WriteLine("Invoking DisplayPrimeCountsAsync");
 
+            //Define a cancellation token to allow Task to cancel
+            var cancellationSource = new CancellationTokenSource();
+            var cancellationToken = cancellationSource.Token;
+
             //Define my progressReporter as an instance of Progress which implements IProgress
+            var count = 0;
             var progressReporter = new Progress<string>(value =>
             {
                 Console.WriteLine(value);
+                if (++count >= 5)
+                {
+                    cancellationSource.Cancel();
+                }
             });
 
             //Create and run the task, but passing the progressReporter as an argument
-            var t1 = new CPUBoundAsync().DisplayPrimeCountsAsync(progressReporter);
+            var t1 = new CPUBoundAsync().DisplayPrimeCountsAsync(progressReporter, cancellationToken);
             t1.Wait();
         }
     }
-    //Exercise
-    //1.    Implement progress reporting in Example 10_03 when writing to the stream (10%, 20%...)
-    //      Notice that you can update myGreeting.Text in the progressReporter instance as creating a Progress object
-    //      internally has the UI SyncronizationContext as the inistance was created in the UI context
 }
+
+//Exercises:
+//1.     Modify the code in Main() so the Task cancellation is done after a user input, through
+//       Console.ReadKey() instead of in the ProgressReporter.
+//       Hint: The Console.ReadKey() and the task cancellation will have to be done
+//       before the t1.Wait()
