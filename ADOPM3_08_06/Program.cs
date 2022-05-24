@@ -67,10 +67,7 @@ namespace ADOPM3_08_06
     class Program
     {
         public static async Task Main()
-        {
-            //Instantiating PrimeService so the Cache is valid for as long as the instance is on the heap
-            //var PrimesService = new PrimeNumberService();
-            
+        {           
             Console.WriteLine("\nInvoking DisplayPrimeCountsAsync - first time cache is empty");
             await PrimeNumberService.DisplayPrimeCountsAsync();
 
