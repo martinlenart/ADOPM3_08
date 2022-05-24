@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace ADOPM3_08_06
 {
-    public class PrimeSuite
+    public class PrimeBatch
     {
         public int start { get; set; }
         public int count { get; set; }  
@@ -14,43 +14,43 @@ namespace ADOPM3_08_06
         //In my cache I use a Dictionary.
         // - Key is start number and count as a tuple
         // - Value is the number of primes in the span start - start+count
-        static ConcurrentDictionary<(int, int), PrimeSuite> _primeNumberCache = new ConcurrentDictionary<(int, int), PrimeSuite>();
+        static ConcurrentDictionary<(int, int), PrimeBatch> _primeNumberCache = new ConcurrentDictionary<(int, int), PrimeBatch>();
 
         static public async Task DisplayPrimeCountsAsync()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 3; i++)
             {
                 //Create my Cache Key
                 int start = i * 1_000_000 + 2;
                 int count = 1_000_000;
 
                 //Without Cache
-                PrimeSuite pSuite = new PrimeSuite { start = start, count = count };
-                pSuite.NrofPrimes = await GetPrimesCountAsync(start, count);
+                //PrimeBatch pResponse = new PrimeBatch { start = start, count = count };
+                //pResponse.NrofPrimes = await GetPrimesCountAsync(start, count);
 
-                /*
+
                 //With Cache
                 //pSuite is null as I first want to check if it exists in the cache
-                PrimeSuite pSuite = null;
+                PrimeBatch pResponse = null;
 
                 //I need a unique Key that represents one calculation value
                 var key = (start, count);
 
                 //Check if Cache already contains the value
-                if (!_primeNumberCache.TryGetValue(key, out pSuite))              
+                if (!_primeNumberCache.TryGetValue(key, out pResponse))              
                 {
                     //the value is not in the cache - get the value the slow way 
-                    pSuite = new PrimeSuite { start = start, count = count };
+                    pResponse = new PrimeBatch { start = start, count = count };
 
                     //It did not exist in the cache, calculate and add it to the cache
-                    pSuite.NrofPrimes = await GetPrimesCountAsync(start, count);
+                    pResponse.NrofPrimes = await GetPrimesCountAsync(start, count);
 
-                    _primeNumberCache[key] = pSuite;
+                    _primeNumberCache[key] = pResponse;
                 }
-                */
+                
 
                 //Regardless if nrOfPrimes where in the cache - I now have it in nrOfPrimes
-                var t = $"{pSuite.NrofPrimes} primes between {pSuite.start} and {pSuite.start + pSuite.count}";
+                var t = $"{pResponse.NrofPrimes} primes between {pResponse.start} and {pResponse.start + pResponse.count}";
                 Console.WriteLine(t);
             }
 
