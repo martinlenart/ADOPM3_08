@@ -23,18 +23,31 @@ namespace ADOPM3_08_06
                 //Create my Cache Key
                 int start = i * 1_000_000 + 2;
                 int count = 1_000_000;
+
+                //Without Cache
+                PrimeSuite pSuite = new PrimeSuite { start = start, count = count };
+                pSuite.NrofPrimes = await GetPrimesCountAsync(start, count);
+
+                /*
+                //With Cache
+                //pSuite is null as I first want to check if it exists in the cache
+                PrimeSuite pSuite = null;
+
+                //I need a unique Key that represents one calculation value
                 var key = (start, count);
 
                 //Check if Cache already contains the value
-                PrimeSuite pSuite = null;
-                if (!_primeNumberCache.TryGetValue(key, out pSuite))
+                if (!_primeNumberCache.TryGetValue(key, out pSuite))              
                 {
+                    //the value is not in the cache - get the value the slow way 
                     pSuite = new PrimeSuite { start = start, count = count };
 
                     //It did not exist in the cache, calculate and add it to the cache
                     pSuite.NrofPrimes = await GetPrimesCountAsync(start, count);
+
                     _primeNumberCache[key] = pSuite;
                 }
+                */
 
                 //Regardless if nrOfPrimes where in the cache - I now have it in nrOfPrimes
                 var t = $"{pSuite.NrofPrimes} primes between {pSuite.start} and {pSuite.start + pSuite.count}";

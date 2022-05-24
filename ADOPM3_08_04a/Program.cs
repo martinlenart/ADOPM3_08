@@ -19,7 +19,7 @@ namespace ADOPM3_08_04a
                     int nrprimes = await GetPrimesCountAsync(i * 1000000 + 2, 1000000);
                     onProgressReporting.Report($"{nrprimes} primes between " + (i * 1000000) + " and " + ((i + 1) * 1000000 - 1));
                 }
-            });
+           });
         }
         Task<int> GetPrimesCountAsync(int start, int count)
         {
@@ -39,18 +39,28 @@ namespace ADOPM3_08_04a
             var cancellationToken = cancellationSource.Token;
 
             //Define my progressReporter as an instance of Progress which implements IProgress
-            var count = 0;
+            //var count = 0;
             var progressReporter = new Progress<string>(value =>
             {
                 Console.WriteLine(value);
+
+                /*
                 if (++count >= 5)
                 {
                     cancellationSource.Cancel();
                 }
+                */
+                
             });
 
             //Create and run the task, but passing the progressReporter as an argument
             var t1 = new CPUBoundAsync().DisplayPrimeCountsAsync(progressReporter, cancellationToken);
+
+            Console.WriteLine("Q To terminate:");
+            var key = Console.ReadKey();
+            if (key.Key == ConsoleKey.Q)
+                cancellationSource.Cancel();
+
             t1.Wait();
         }
     }

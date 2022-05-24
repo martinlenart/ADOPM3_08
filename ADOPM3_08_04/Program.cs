@@ -9,15 +9,19 @@ namespace ADOPM3_08_04
 {
     internal class CPUBoundAsync
     {
-        public Task DisplayPrimeCountsAsync(IProgress<string> onProgressReporting)
+        public Task DisplayPrimeCountsAsync(IProgress<(string, float)> onProgressReporting)
         {
             //Notice I can use async in Lambda Expression
             return Task.Run(async () =>
             {
+                float completion = 0;
                 for (int i = 0; i < 20; i++)
                 {
                     int nrprimes = await GetPrimesCountAsync(i * 1000000 + 2, 1000000);
-                    onProgressReporting.Report($"{nrprimes} primes between " + (i * 1000000) + " and " + ((i + 1) * 1000000 - 1));
+                    completion += 5;
+                    onProgressReporting.Report(
+                        ($"{nrprimes} primes between " + (i * 1000000) + " and " + ((i + 1) * 1000000 - 1),
+                        completion));
                 }
             });
         }
@@ -35,9 +39,9 @@ namespace ADOPM3_08_04
             Console.WriteLine("Invoking DisplayPrimeCountsAsync");
 
             //Define my progressReporter as an instance of Progress which implements IProgress
-            var progressReporter = new Progress<string>(value =>
+            var progressReporter = new Progress<(string, float)>(value =>
             {
-                Console.WriteLine(value);
+                Console.WriteLine($"{value.Item2}%: {value.Item1}");
             });
 
             //Create and run the task, but passing the progressReporter as an argument
