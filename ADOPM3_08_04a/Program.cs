@@ -30,7 +30,7 @@ namespace ADOPM3_08_04a
     }
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.WriteLine("Invoking DisplayPrimeCountsAsync");
 
@@ -61,7 +61,7 @@ namespace ADOPM3_08_04a
             if (key.Key == ConsoleKey.Q)
                 cancellationSource.Cancel();
 
-            t1.Wait();
+            await t1;
         }
     }
 }

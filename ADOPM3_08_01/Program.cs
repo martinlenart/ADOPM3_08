@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace ADOPM3_08_01
 {
-    internal class IOBoundAsync
+    public class IOBoundAsync
     {
         public async Task<int> GetDotNetCountAsync()
         {
@@ -15,7 +15,7 @@ namespace ADOPM3_08_01
             return Regex.Matches(html, @"\.NET").Count;
         }
     }
-    internal class CPUBoundAsync
+    public class CPUBoundAsync
     {
         public async Task DisplayPrimeCountsAsync()
         {
